@@ -6,6 +6,10 @@ void main() {
 }
 
 class FlutterQuiz extends StatelessWidget {
+  void answerQuestion(){
+    print("Answer chosen");
+  }
+
   @override //Decorator: Makes the code a little bit clearerbh
   Widget build(BuildContext context) {
     var questions = [
@@ -23,15 +27,15 @@ class FlutterQuiz extends StatelessWidget {
             Text('The question!'),
             RaisedButton(
               child: Text('Answer 1'),
-              onPressed: null,
+              onPressed: answerQuestion,
             ),
             RaisedButton(
               child: Text('Answer 1'),
-              onPressed: null,
+              onPressed: answerQuestion,
             ),
             RaisedButton(
               child: Text('Answer 1'),
-              onPressed: null,
+              onPressed: answerQuestion,
             ),
           ],
         ),
