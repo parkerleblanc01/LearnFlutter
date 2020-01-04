@@ -6,8 +6,8 @@ void main() {
 }
 
 class FlutterQuiz extends StatelessWidget {
-  void answerQuestion(){
-    print("Answer chosen");
+  void answerQuestion() {
+    print("Answer 2 chosen!");
   }
 
   @override //Decorator: Makes the code a little bit clearerbh
@@ -27,15 +27,19 @@ class FlutterQuiz extends StatelessWidget {
             Text('The question!'),
             RaisedButton(
               child: Text('Answer 1'),
+              onPressed: () {
+                print("Answer 1 chosen!");
+              },
+            ),
+            RaisedButton(
+              child: Text('Answer 2'),
               onPressed: answerQuestion,
             ),
             RaisedButton(
-              child: Text('Answer 1'),
-              onPressed: answerQuestion,
-            ),
-            RaisedButton(
-              child: Text('Answer 1'),
-              onPressed: answerQuestion,
+              child: Text('Answer 3'),
+              onPressed: () {
+                print("Answer 3 chosen!");
+              },
             ),
           ],
         ),
