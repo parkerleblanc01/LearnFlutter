@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './question.dart';
+import './answer.dart';
 // Entry Function
 void main() {
   runApp(FlutterQuiz());
@@ -38,22 +39,9 @@ class _FlutterQuizState extends State<FlutterQuiz> {
         body: Column(
           children: [
             Question(questions[_questionIndex]),
-            RaisedButton(
-              child: Text('Answer 1'),
-              onPressed: () {
-                print("Answer 1 chosen!");
-              },
-            ),
-            RaisedButton(
-              child: Text('Answer 2'),
-              onPressed: _answerQuestion,
-            ),
-            RaisedButton(
-              child: Text('Answer 3'),
-              onPressed: () {
-                print("Answer 3 chosen!");
-              },
-            ),
+            Answer(_answerQuestion),
+            Answer(_answerQuestion),
+            Answer(_answerQuestion),
           ],
         ),
       ),
