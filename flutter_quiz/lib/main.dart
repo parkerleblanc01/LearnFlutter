@@ -5,9 +5,21 @@ void main() {
   runApp(FlutterQuiz());
 }
 
-class FlutterQuiz extends StatelessWidget {
+class FlutterQuiz extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return FlutterQuizState();
+  }
+}
+
+class FlutterQuizState extends State<FlutterQuiz> {
+  var questionIndex = 0;
+
   void answerQuestion() {
-    print("Answer 2 chosen!");
+    setState(() {
+      questionIndex += 1;
+    });
+    print("Answer " + questionIndex.toString() + " chosen!");
   }
 
   @override //Decorator: Makes the code a little bit clearerbh
@@ -24,7 +36,7 @@ class FlutterQuiz extends StatelessWidget {
         ),
         body: Column(
           children: [
-            Text('The question!'),
+            Text(questions[questionIndex]),
             RaisedButton(
               child: Text('Answer 1'),
               onPressed: () {
