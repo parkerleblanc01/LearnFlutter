@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './question.dart';
 import './answer.dart';
+
 // Entry Function
 void main() {
   runApp(FlutterQuiz());
@@ -27,8 +28,18 @@ class _FlutterQuizState extends State<FlutterQuiz> {
   @override //Decorator: Makes the code a little bit clearerbh
   Widget build(BuildContext context) {
     var questions = [
-      'What\'s your favorite color?',
-      'What\'s your favorite animal?'
+      {
+        "questionText": "What\'s your favorite color?",
+        "answers": ["Black", "Red", "White"]
+      },
+      {
+        "questionText": "What\'s your favorite animal?",
+        "answers": ["Dog", "Cat", "Fish"]
+      },
+      {
+        "questionText": "What\'s your favorite state?",
+        "answers": ["Arizona", "California", "Georgia"]
+      }
     ];
 
     return MaterialApp(
@@ -38,10 +49,10 @@ class _FlutterQuizState extends State<FlutterQuiz> {
         ),
         body: Column(
           children: [
-            Question(questions[_questionIndex]),
-            Answer(_answerQuestion),
-            Answer(_answerQuestion),
-            Answer(_answerQuestion),
+            Question(questions[_questionIndex]["questionText"]),
+            ...(questions[_questionIndex]["answers"] as List<String>).map((answer) {
+              return Answer(_answerQuestion, answer);
+            }).toList()
           ],
         ),
       ),
