@@ -28,8 +28,8 @@ class _FlutterQuizState extends State<FlutterQuiz> {
       "answers": ["Dog", "Cat", "Fish"]
     },
     {
-      "questionText": "What\'s your favorite state?",
-      "answers": ["Arizona", "California", "Georgia"]
+      "questionText": "Will you have sex with me?",
+      "answers": ["Yes", "No"]
     }
   ];
 
@@ -55,7 +55,7 @@ class _FlutterQuizState extends State<FlutterQuiz> {
             }).toList()
           ],
         ) : Center(
-          child: Text("You did it!"),
+          child: Text("Come to bed ;)"),
         ),
       ),
     );
