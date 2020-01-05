@@ -14,10 +14,10 @@ class Result extends StatelessWidget {
       resultText = "You are the coolest";
     }
     else if(resultScore < 12){
-      resultText = "Pretty cool" + resultText;
+      resultText = "You are pretty cool" + resultText;
     }
     else if(resultScore < 18){
-      resultText = "Kinda cool" + resultText;
+      resultText = "You are kinda cool" + resultText;
     }
     else {
       resultText = "Not cool bro" + resultText;

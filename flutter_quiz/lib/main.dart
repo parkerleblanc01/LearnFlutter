@@ -71,7 +71,7 @@ class _FlutterQuizState extends State<FlutterQuiz> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("My First App"),
+          title: Text("Coolness Quiz"),
         ),
         body: _questionIndex < _questions.length
             ? Quiz(
