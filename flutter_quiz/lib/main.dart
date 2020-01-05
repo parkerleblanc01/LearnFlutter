@@ -18,42 +18,44 @@ class FlutterQuiz extends StatefulWidget {
 class _FlutterQuizState extends State<FlutterQuiz> {
   var _questionIndex = 0;
 
+  final questions = const [
+    {
+      "questionText": "What\'s your favorite color?",
+      "answers": ["Black", "Red", "White"]
+    },
+    {
+      "questionText": "What\'s your favorite animal?",
+      "answers": ["Dog", "Cat", "Fish"]
+    },
+    {
+      "questionText": "What\'s your favorite state?",
+      "answers": ["Arizona", "California", "Georgia"]
+    }
+  ];
+
   void _answerQuestion() {
     setState(() {
       _questionIndex += 1;
     });
-    print("Answer " + _questionIndex.toString() + " chosen!");
   }
 
   @override //Decorator: Makes the code a little bit clearerbh
   Widget build(BuildContext context) {
-    var questions = [
-      {
-        "questionText": "What\'s your favorite color?",
-        "answers": ["Black", "Red", "White"]
-      },
-      {
-        "questionText": "What\'s your favorite animal?",
-        "answers": ["Dog", "Cat", "Fish"]
-      },
-      {
-        "questionText": "What\'s your favorite state?",
-        "answers": ["Arizona", "California", "Georgia"]
-      }
-    ];
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text("My First App"),
         ),
-        body: Column(
+        body: _questionIndex < questions.length ? Column (
           children: [
             Question(questions[_questionIndex]["questionText"]),
-            ...(questions[_questionIndex]["answers"] as List<String>).map((answer) {
+            ...(questions[_questionIndex]["answers"] as List<String>)
+                .map((answer) {
               return Answer(_answerQuestion, answer);
             }).toList()
           ],
+        ) : Center(
+          child: Text("You did it!"),
         ),
       ),
     );
