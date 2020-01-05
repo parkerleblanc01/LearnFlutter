@@ -23,12 +23,14 @@ class _FlutterQuizState extends State<FlutterQuiz> {
     {
       "questionText": "What\'s your favorite color?",
       "answers": [
-        {"text": "Black", "score": 10}, 
-        {"text": "Red", "score": 6}, 
-        {"text": "White", "score": 3}, 
-        {"text": "Blue", "score": 8}, 
-        {"text": "Green", "score": 1}, 
-        {"text": "Pink", "score": 6}]
+        {"text": "Black", "score": 10},
+        {"text": "Red", "score": 6},
+        {"text": "White", "score": 3},
+        {"text": "Blue", "score": 1},
+        {"text": "Silver", "score": 1},
+        {"text": "Green", "score": 1},
+        {"text": "Pink", "score": 6}
+      ]
     },
     {
       "questionText": "What\'s your favorite animal?",
@@ -41,13 +43,20 @@ class _FlutterQuizState extends State<FlutterQuiz> {
       ]
     },
     {
-      "questionText": "Will you have sex with me?",
+      "questionText": "Do you like pizza?",
       "answers": [
         {"text": "Yes", "score": 1},
         {"text": "No", "score": 10},
       ]
     }
   ];
+
+  void _resetQuiz() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
+    });
+  }
 
   void _answerQuestion(int score) {
     _totalScore += score;
@@ -66,11 +75,11 @@ class _FlutterQuizState extends State<FlutterQuiz> {
         ),
         body: _questionIndex < _questions.length
             ? Quiz(
-              answerQuestion: _answerQuestion,
-              questionIndex: _questionIndex,
-              questions: _questions, 
-            )
-            : Result(),
+                answerQuestion: _answerQuestion,
+                questionIndex: _questionIndex,
+                questions: _questions,
+              )
+            : Result(_resetQuiz, _totalScore),
       ),
     );
   }
