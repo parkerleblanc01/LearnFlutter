@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './question.dart';
-import './answer.dart';
+import './quiz.dart';
+import './result.dart';
 
 // Entry Function
 void main() {
@@ -17,23 +17,41 @@ class FlutterQuiz extends StatefulWidget {
 
 class _FlutterQuizState extends State<FlutterQuiz> {
   var _questionIndex = 0;
+  var _totalScore = 0;
 
-  final questions = const [
+  final _questions = const [
     {
       "questionText": "What\'s your favorite color?",
-      "answers": ["Black", "Red", "White"]
+      "answers": [
+        {"text": "Black", "score": 10}, 
+        {"text": "Red", "score": 6}, 
+        {"text": "White", "score": 3}, 
+        {"text": "Blue", "score": 8}, 
+        {"text": "Green", "score": 1}, 
+        {"text": "Pink", "score": 6}]
     },
     {
       "questionText": "What\'s your favorite animal?",
-      "answers": ["Dog", "Cat", "Fish"]
+      "answers": [
+        {"text": "Dog", "score": 1},
+        {"text": "Cat", "score": 10},
+        {"text": "Fish", "score": 9},
+        {"text": "Bunny", "score": 5},
+        {"text": "Hampster", "score": 8},
+      ]
     },
     {
       "questionText": "Will you have sex with me?",
-      "answers": ["Yes", "No"]
+      "answers": [
+        {"text": "Yes", "score": 1},
+        {"text": "No", "score": 10},
+      ]
     }
   ];
 
-  void _answerQuestion() {
+  void _answerQuestion(int score) {
+    _totalScore += score;
+
     setState(() {
       _questionIndex += 1;
     });
@@ -46,17 +64,13 @@ class _FlutterQuizState extends State<FlutterQuiz> {
         appBar: AppBar(
           title: Text("My First App"),
         ),
-        body: _questionIndex < questions.length ? Column (
-          children: [
-            Question(questions[_questionIndex]["questionText"]),
-            ...(questions[_questionIndex]["answers"] as List<String>)
-                .map((answer) {
-              return Answer(_answerQuestion, answer);
-            }).toList()
-          ],
-        ) : Center(
-          child: Text("Come to bed ;)"),
-        ),
+        body: _questionIndex < _questions.length
+            ? Quiz(
+              answerQuestion: _answerQuestion,
+              questionIndex: _questionIndex,
+              questions: _questions, 
+            )
+            : Result(),
       ),
     );
   }
