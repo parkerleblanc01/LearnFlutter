@@ -8,18 +8,18 @@ void main() {
 class FlutterQuiz extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return FlutterQuizState();
+    return _FlutterQuizState();
   }
 }
 
-class FlutterQuizState extends State<FlutterQuiz> {
-  var questionIndex = 0;
+class _FlutterQuizState extends State<FlutterQuiz> {
+  var _questionIndex = 0;
 
-  void answerQuestion() {
+  void _answerQuestion() {
     setState(() {
-      questionIndex += 1;
+      _questionIndex += 1;
     });
-    print("Answer " + questionIndex.toString() + " chosen!");
+    print("Answer " + _questionIndex.toString() + " chosen!");
   }
 
   @override //Decorator: Makes the code a little bit clearerbh
@@ -36,7 +36,7 @@ class FlutterQuizState extends State<FlutterQuiz> {
         ),
         body: Column(
           children: [
-            Text(questions[questionIndex]),
+            Text(questions[_questionIndex]),
             RaisedButton(
               child: Text('Answer 1'),
               onPressed: () {
@@ -45,7 +45,7 @@ class FlutterQuizState extends State<FlutterQuiz> {
             ),
             RaisedButton(
               child: Text('Answer 2'),
-              onPressed: answerQuestion,
+              onPressed: _answerQuestion,
             ),
             RaisedButton(
               child: Text('Answer 3'),
