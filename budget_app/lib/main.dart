@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
+              button: TextStyle(color: Colors.white)
             ),
         fontFamily: 'Quicksand',
         appBarTheme: AppBarTheme(
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
+                button: TextStyle(color: Colors.white)
               ),
         ),
       ),
