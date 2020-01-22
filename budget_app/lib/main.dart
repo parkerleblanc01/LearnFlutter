@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
                 title: TextStyle(
+                  color: Colors.white,
                   fontFamily: 'OpenSans',
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -91,7 +92,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Budget App'),
+        title: Text(
+          'Budget App',
+          style: Theme.of(context).appBarTheme.textTheme.title,),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
