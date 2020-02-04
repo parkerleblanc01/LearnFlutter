@@ -43,7 +43,8 @@ class TransactionList extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.all(6),
                       child: FittedBox(
-                          child: Text('\$${_userTransactions[index].amount}')),
+                        child: Text('\$${_userTransactions[index].amount}'),
+                      ),
                     ),
                   ),
                   title: Text(
@@ -53,13 +54,22 @@ class TransactionList extends StatelessWidget {
                   subtitle: Text(
                     DateFormat.yMMMd().format(_userTransactions[index].date),
                   ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    color: Theme.of(context).errorColor,
-                    onPressed: () {
-                      _deleteTransaction(_userTransactions[index].id);
-                    },
-                  ),
+                  trailing: MediaQuery.of(context).size.width > 460
+                      ? FlatButton.icon(
+                          icon: Icon(Icons.delete),
+                          label: Text('Delete'),
+                          textColor: Theme.of(context).errorColor,
+                          onPressed: () {
+                            _deleteTransaction(_userTransactions[index].id);
+                          },
+                        )
+                      : IconButton(
+                          icon: Icon(Icons.delete),
+                          color: Theme.of(context).errorColor,
+                          onPressed: () {
+                            _deleteTransaction(_userTransactions[index].id);
+                          },
+                        ),
                 ),
               );
             },
