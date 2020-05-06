@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 //Models
-import '../models/product.dart';
+import '../providers/product.dart';
 
 //Screens
 
