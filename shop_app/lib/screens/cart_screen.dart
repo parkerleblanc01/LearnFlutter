@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 // Provider
 import '../providers/cart.dart';
+import '../providers/orders.dart';
 
 // Widgets
 import '../widgets/cart_item_card.dart';
@@ -41,7 +42,13 @@ class CartScreen extends StatelessWidget {
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Provider.of<Orders>(context, listen: false).addOrder(
+                        cart.items.values.toList(),
+                        cart.totalAmount,
+                      );
+                      cart.clear();
+                    },
                     child: Text(
                       'ORDER NOW',
                       style: TextStyle(color: Theme.of(context).primaryColor),
@@ -56,10 +63,8 @@ class CartScreen extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemBuilder: (ctx, i)  => CartItemCard(
-                cart.items.values.toList()[i],
-                cart.items.keys.toList()[i]
-              ),
+              itemBuilder: (ctx, i) => CartItemCard(
+                  cart.items.values.toList()[i], cart.items.keys.toList()[i]),
               itemCount: cart.itemCount,
             ),
           )
