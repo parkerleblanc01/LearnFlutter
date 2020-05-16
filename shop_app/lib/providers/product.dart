@@ -17,6 +17,21 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
+  Product newModifiedProduct(
+      {String id,
+      String title,
+      String description,
+      double price,
+      String imageUrl}) {
+    return Product(
+      id: id != null ? id : this.id,
+      title: title != null ? title : this.title,
+      description: description != null ? description : this.description,
+      price: price != null ? price : this.price,
+      imageUrl: imageUrl != null ? imageUrl : this.imageUrl,
+    );
+  }
+
   void toggleFavoriteStatus() {
     isFavorite = !isFavorite;
     notifyListeners();

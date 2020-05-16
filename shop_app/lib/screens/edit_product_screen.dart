@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // Providers
 import '../providers/product.dart';
+import '../providers/products.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-product-screen';
@@ -37,7 +39,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _form.currentState.save();
-    print(_editedProduct.title);
+    Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -84,12 +87,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   return null;
                 },
                 onSaved: (value) {
-                  _editedProduct = Product(
+                  _editedProduct = _editedProduct.newModifiedProduct(
                     title: value,
-                    price: _editedProduct.price,
-                    description: _editedProduct.description,
-                    imageUrl: _editedProduct.imageUrl,
-                    id: null,
                   );
                 },
               ),
@@ -118,12 +117,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   return null;
                 },
                 onSaved: (value) {
-                  _editedProduct = Product(
-                    title: _editedProduct.title,
+                  _editedProduct = _editedProduct.newModifiedProduct(
                     price: double.parse(value),
-                    description: _editedProduct.description,
-                    imageUrl: _editedProduct.imageUrl,
-                    id: null,
                   );
                 },
               ),
@@ -141,12 +136,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   return null;
                 },
                 onSaved: (value) {
-                  _editedProduct = Product(
-                    title: _editedProduct.title,
-                    price: _editedProduct.price,
+                  _editedProduct = _editedProduct.newModifiedProduct(
                     description: value,
-                    imageUrl: _editedProduct.imageUrl,
-                    id: null,
                   );
                 },
               ),
@@ -188,18 +179,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         if (!value.startsWith('http')) {
                           return 'Please enter a valid url.';
                         }
-                        if (!value.endsWith('.png') && !value.endsWith('.jpg') && !value.endsWith('.jpeg')) {
+                        if (!value.endsWith('.png') &&
+                            !value.endsWith('.jpg') &&
+                            !value.endsWith('.jpeg')) {
                           return 'Please enter a valid image url.';
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        _editedProduct = Product(
-                          title: _editedProduct.title,
-                          price: _editedProduct.price,
-                          description: _editedProduct.description,
+                        _editedProduct = _editedProduct.newModifiedProduct(
                           imageUrl: value,
-                          id: null,
                         );
                       },
                     ),
