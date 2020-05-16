@@ -52,10 +52,19 @@ class Products with ChangeNotifier {
   }
 
   void addProduct(Product product) {
-    print(product.imageUrl);
     final newProduct = product.newModifiedProduct(id: DateTime.now().toString());
-    print(newProduct.imageUrl);
     _items.insert(0, newProduct);
     notifyListeners();
+  }
+
+  void updateProduct(Product product) {
+    final prodIndex = _items.indexWhere((prod) => prod.id == product.id);
+    if (prodIndex >= 0) {
+      _items[prodIndex] = product;
+      notifyListeners();
+    }
+    else {
+      print('No product matching this id was found');
+    }
   }
 }

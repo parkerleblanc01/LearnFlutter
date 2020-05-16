@@ -18,13 +18,32 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageUrlFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
   final _form = GlobalKey<FormState>();
-  var _editedProduct =
-      Product(id: null, title: '', price: 0, description: '', imageUrl: '');
+  var _editedProduct = Product(
+    id: null,
+    title: '',
+    price: -1,
+    description: '',
+    imageUrl: '',
+  );
+  var _isInit = false;
 
   @override
   void initState() {
     _imageUrlFocusNode.addListener(_updateImageUrl);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (!_isInit) {
+      final productId = ModalRoute.of(context).settings.arguments as String;
+      if (productId != null) {
+        _editedProduct = Provider.of<Products>(context, listen: false).findById(productId);
+        _imageUrlController.text = _editedProduct.imageUrl;
+      }
+    }
+    _isInit = true;
+    super.didChangeDependencies();
   }
 
   void _updateImageUrl() {
@@ -39,7 +58,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _form.currentState.save();
-    Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+    if (_editedProduct.id != null) {
+      Provider.of<Products>(context, listen: false).updateProduct(_editedProduct);
+    }
+    else {
+      Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+    }
     Navigator.of(context).pop();
   }
 
@@ -73,6 +97,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           child: ListView(
             children: <Widget>[
               TextFormField(
+                initialValue: _editedProduct.title,
                 decoration: InputDecoration(
                   labelText: 'Title',
                 ),
@@ -93,6 +118,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 },
               ),
               TextFormField(
+                initialValue: _editedProduct.price == -1 ? '' : _editedProduct.price.toString(),
                 decoration: InputDecoration(
                   labelText: 'Price',
                 ),
@@ -123,6 +149,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 },
               ),
               TextFormField(
+                initialValue: _editedProduct.description,
                 decoration: InputDecoration(
                   labelText: 'Description',
                 ),
