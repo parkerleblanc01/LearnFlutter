@@ -17,6 +17,17 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
+  static Product fromJson({@required String newId, @required dynamic jsonObject}) {
+    return new Product(
+      id: newId,
+      title: jsonObject['title'],
+      description: jsonObject['description'],
+      price: jsonObject['price'],
+      imageUrl: jsonObject['imageUrl'],
+      isFavorite: jsonObject['isFavorite'],
+    );
+  }
+
   Product newModifiedProduct(
       {String id,
       String title,
