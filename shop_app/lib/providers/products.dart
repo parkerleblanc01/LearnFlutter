@@ -65,6 +65,9 @@ class Products with ChangeNotifier {
       final newProduct = product.newModifiedProduct(id: json.decode(response.body)['name']);
       _items.insert(0, newProduct);
       notifyListeners();
+    }).catchError((error) {
+      print(error);
+      throw error;
     });
   }
 
