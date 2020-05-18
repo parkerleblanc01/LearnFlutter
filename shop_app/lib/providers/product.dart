@@ -17,15 +17,25 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  static Product fromJson({@required String newId, @required dynamic jsonObject}) {
+  static Product fromMap({@required String newId, @required Map<String, dynamic> map}) {
     return new Product(
       id: newId,
-      title: jsonObject['title'],
-      description: jsonObject['description'],
-      price: jsonObject['price'],
-      imageUrl: jsonObject['imageUrl'],
-      isFavorite: jsonObject['isFavorite'],
+      title: map['title'],
+      description: map['description'],
+      price: map['price'],
+      imageUrl: map['imageUrl'],
+      isFavorite: map['isFavorite'],
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'description': description,
+      'imageUrl': imageUrl,
+      'price': price,
+      'isFavorite': isFavorite,
+    };
   }
 
   Product newModifiedProduct(

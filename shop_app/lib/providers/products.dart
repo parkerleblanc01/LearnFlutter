@@ -6,8 +6,7 @@ import 'package:http/http.dart' as http;
 import './product.dart';
 
 class Products with ChangeNotifier {
-  final _productsUrl =
-      'https://shop-app-server-eb241.firebaseio.com/products.json';
+  final _baseUrl ='https://shop-app-server-eb241.firebaseio.com';
   List<Product> _items = [];
 // Left here for future testing
 //    Product(
@@ -59,13 +58,13 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     try {
-      final response = await http.get(_productsUrl);
+      final response = await http.get("$_baseUrl/products.json");
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       List<Product> fetchedProducts = [];
       extractedData.forEach((productId, prodData) {
-        fetchedProducts.add(Product.fromJson(
+        fetchedProducts.add(Product.fromMap(
           newId: productId,
-          jsonObject: prodData,
+          map: prodData,
         ));
       });
       _items = fetchedProducts;
@@ -79,14 +78,8 @@ class Products with ChangeNotifier {
   Future<void> addProduct(Product product) async {
     try {
       final response = await http.post(
-        _productsUrl,
-        body: json.encode({
-          'title': product.title,
-          'description': product.description,
-          'imageUrl': product.imageUrl,
-          'price': product.price,
-          'isFavorite': product.isFavorite,
-        }),
+        "$_baseUrl/products.json",
+        body: json.encode(product.toMap()),
       );
       final newProduct = product.newModifiedProduct(
         id: json.decode(response.body)['name'],
@@ -99,9 +92,12 @@ class Products with ChangeNotifier {
     }
   }
 
-  void updateProduct(Product product) {
+  Future<void> updateProduct(Product product) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == product.id);
     if (prodIndex >= 0) {
+      await http.patch("$_baseUrl/products/${product.id}.json",
+      body: json.encode(product.toMap()),
+      );
       _items[prodIndex] = product;
       notifyListeners();
     } else {
