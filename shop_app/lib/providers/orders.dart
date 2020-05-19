@@ -1,8 +1,13 @@
 import 'package:flutter/foundation.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 // Models
 import '../models/order_item.dart';
 import '../models/cart_item.dart';
+
+// Providers
+import '../providers/products.dart';
 
 class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
@@ -11,15 +16,20 @@ class Orders with ChangeNotifier {
     return new List<OrderItem>.from(_orders);
   }
 
-  void addOrder(List<CartItem> cartProducts, double total) {
+  Future<void> addOrder(List<CartItem> cartProducts, double total) async {
+    final newOrder = OrderItem(
+      id: null,
+      amount: total,
+      dateTime: DateTime.now(),
+      products: cartProducts,
+    );
+    final response = await http.post(
+      "${Products.baseUrl}/orders.json",
+      body: json.encode(newOrder.toMap()),
+    );
     _orders.insert(
       0,
-      OrderItem(
-        id: DateTime.now().toString(),
-        amount: total,
-        dataTime: DateTime.now(),
-        products: cartProducts,
-      ),
+      newOrder.newModifiedOrder(id: json.decode(response.body)['name']),
     );
     notifyListeners();
   }

@@ -26,7 +26,7 @@ class _OrderItemCardState extends State<OrderItemCard> {
           ListTile(
             title: Text('\$${widget.order.amount}'),
             subtitle: Text(
-              DateFormat('MM/dd/yyyy hh:mm').format(widget.order.dataTime),
+              DateFormat('MM/dd/yyyy hh:mm').format(widget.order.dateTime),
             ),
             trailing: IconButton(
               icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),

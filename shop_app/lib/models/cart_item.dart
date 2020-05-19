@@ -12,4 +12,23 @@ class CartItem {
     @required this.quantity,
     @required this.price,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'quantity': quantity,
+      'price': price
+    };
+  }
+
+  static CartItem fromMap(
+      {@required String newId, @required Map<String, dynamic> map}) {
+    return new CartItem(
+      id: newId,
+      title: map['title'],
+      quantity: map['quantity'],
+      price: map['price'],
+    );
+  }
 }
