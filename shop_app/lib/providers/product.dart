@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+// Providers
+import '../providers/products.dart';
 
 class Product with ChangeNotifier {
   final String id;
@@ -17,7 +22,8 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  static Product fromMap({@required String newId, @required Map<String, dynamic> map}) {
+  static Product fromMap(
+      {@required String newId, @required Map<String, dynamic> map}) {
     return new Product(
       id: newId,
       title: map['title'],
@@ -55,8 +61,28 @@ class Product with ChangeNotifier {
     );
   }
 
-  void toggleFavoriteStatus() {
+  void toggleFavoriteStatus() async {
+    final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
+    var hasError = false;
+    try {
+      final response = await http.patch(
+        "${Products.baseUrl}/products/$id.json",
+        body: json.encode({
+          'isFavorite': isFavorite,
+        }),
+      );
+      if (response.statusCode >= 400) {
+        hasError = true;
+      }
+    } catch (error) {
+      hasError = true;
+    }
+
+    if (hasError) {
+      isFavorite = oldStatus;
+      notifyListeners();
+    }
   }
 }

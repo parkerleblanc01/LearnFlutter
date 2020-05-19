@@ -9,7 +9,7 @@ import './product.dart';
 import '../models/http_exception.dart';
 
 class Products with ChangeNotifier {
-  final _baseUrl = 'https://shop-app-server-eb241.firebaseio.com';
+  static const baseUrl = 'https://shop-app-server-eb241.firebaseio.com';
   List<Product> _items = [];
 
 // Left here for future testing
@@ -62,7 +62,7 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     try {
-      final response = await http.get("$_baseUrl/products.json");
+      final response = await http.get("$baseUrl/products.json");
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       List<Product> fetchedProducts = [];
       extractedData.forEach((productId, prodData) {
@@ -82,7 +82,7 @@ class Products with ChangeNotifier {
   Future<void> addProduct(Product product) async {
     try {
       final response = await http.post(
-        "$_baseUrl/products.json",
+        "$baseUrl/products.json",
         body: json.encode(product.toMap()),
       );
       final newProduct = product.newModifiedProduct(
@@ -100,7 +100,7 @@ class Products with ChangeNotifier {
     final prodIndex = _items.indexWhere((prod) => prod.id == product.id);
     if (prodIndex >= 0) {
       await http.patch(
-        "$_baseUrl/products/${product.id}.json",
+        "$baseUrl/products/${product.id}.json",
         body: json.encode(product.toMap()),
       );
       _items[prodIndex] = product;
@@ -118,7 +118,7 @@ class Products with ChangeNotifier {
 
     var errorExists = false;
     try {
-      final response = await http.delete("$_baseUrl/products/$id.json");
+      final response = await http.delete("$baseUrl/products/$id.json");
       if (response.statusCode >= 400) {
         errorExists = true;
       }
