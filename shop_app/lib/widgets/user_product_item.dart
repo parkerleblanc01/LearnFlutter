@@ -51,8 +51,21 @@ class UserProductItem extends StatelessWidget {
                         child: Text('No'),
                       ),
                       FlatButton(
-                        onPressed: () {
-                          Provider.of<Products>(context, listen: false).deleteProduct(id);
+                        onPressed: () async {
+                          try {
+                            await Provider.of<Products>(context, listen: false)
+                                .deleteProduct(id);
+                          } catch (error) {
+                            // If this doesn't work we can always get access to the scaffold outside of the future
+                            Scaffold.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Deleting failed!',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            );
+                          }
                           Navigator.of(ctx).pop(true);
                         },
                         child: Text('Yes'),

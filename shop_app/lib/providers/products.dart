@@ -5,9 +5,13 @@ import 'package:http/http.dart' as http;
 // Providers
 import './product.dart';
 
+// Models
+import '../models/http_exception.dart';
+
 class Products with ChangeNotifier {
-  final _baseUrl ='https://shop-app-server-eb241.firebaseio.com';
+  final _baseUrl = 'https://shop-app-server-eb241.firebaseio.com';
   List<Product> _items = [];
+
 // Left here for future testing
 //    Product(
 //      id: 'p1',
@@ -95,8 +99,9 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(Product product) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == product.id);
     if (prodIndex >= 0) {
-      await http.patch("$_baseUrl/products/${product.id}.json",
-      body: json.encode(product.toMap()),
+      await http.patch(
+        "$_baseUrl/products/${product.id}.json",
+        body: json.encode(product.toMap()),
       );
       _items[prodIndex] = product;
       notifyListeners();
@@ -105,8 +110,30 @@ class Products with ChangeNotifier {
     }
   }
 
-  void deleteProduct(String id) {
-    _items.removeWhere((prod) => prod.id == id);
+  Future<void> deleteProduct(String id) async{
+    final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
+    var existingProduct = _items[existingProductIndex];
+    _items.removeAt(existingProductIndex);
     notifyListeners();
+
+    var errorExists = false;
+    try {
+      final response = await http.delete("$_baseUrl/products/$id.json");
+      if (response.statusCode >= 400) {
+        errorExists = true;
+      }
+    }
+    catch (error){
+      print(error);
+      errorExists = true;
+    }
+
+    if (errorExists) {
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException('Could not delete product.');
+    }
+
+    existingProduct = null;
   }
 }
