@@ -23,9 +23,9 @@ class CartItem {
   }
 
   static CartItem fromMap(
-      {@required String newId, @required Map<String, dynamic> map}) {
+      {@required Map<String, dynamic> map}) {
     return new CartItem(
-      id: newId,
+      id: map['id'],
       title: map['title'],
       quantity: map['quantity'],
       price: map['price'],

@@ -26,15 +26,16 @@ class OrderItem {
 
   static OrderItem fromMap(
       {@required String newId, @required Map<String, dynamic> map}) {
-    var cartItems = [];
-    map['products'].forEach((cpId, cpData) {
-      cartItems.add(CartItem.fromMap(newId: cpId, map: cpData));
+    List<CartItem> cartItems = [];
+    var newProducts = map['products'] as List<dynamic>;
+    newProducts.forEach((cpData) {
+      cartItems.add(CartItem.fromMap(map: cpData));
     });
     return new OrderItem(
       id: newId,
       amount: map['amount'],
       products: cartItems,
-      dateTime: map['dateTime'],
+      dateTime: DateTime.parse(map['dateTime']),
     );
   }
 

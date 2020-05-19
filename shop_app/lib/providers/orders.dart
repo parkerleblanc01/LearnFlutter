@@ -16,6 +16,20 @@ class Orders with ChangeNotifier {
     return new List<OrderItem>.from(_orders);
   }
 
+  Future<void> fetchAndSetOrders() async {
+    final response = await http.get("${Products.baseUrl}/orders.json");
+    final List<OrderItem> loadedOrders = [];
+    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    if (extractedData == null) {
+      return;
+    }
+    extractedData.forEach((orderId, orderData) {
+      loadedOrders.add(OrderItem.fromMap(newId: orderId, map: orderData));
+    });
+    _orders = loadedOrders;
+    notifyListeners();
+  }
+
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final newOrder = OrderItem(
       id: null,
