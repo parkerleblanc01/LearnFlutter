@@ -1,6 +1,9 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+// Providers
+import '../providers/auth.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -99,7 +102,7 @@ class _AuthCardState extends State<AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  void _submit() {
+  Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
       return;
@@ -110,8 +113,16 @@ class _AuthCardState extends State<AuthCard> {
     });
     if (_authMode == AuthMode.Login) {
       // Log user in
+      await Provider.of<Auth>(context, listen: false).login(
+        _authData['email'],
+        _authData['password'],
+      );
     } else {
       // Sign user up
+      await Provider.of<Auth>(context, listen: false).signUp(
+        _authData['email'],
+        _authData['password'],
+      );
     }
     setState(() {
       _isLoading = false;
@@ -176,39 +187,40 @@ class _AuthCardState extends State<AuthCard> {
                     _authData['password'] = value;
                   },
                 ),
-                _authMode == AuthMode.Signup ?
-                  TextFormField(
-                    enabled: _authMode == AuthMode.Signup,
-                    decoration: InputDecoration(labelText: 'Confirm Password'),
-                    obscureText: true,
-                    validator: _authMode == AuthMode.Signup
-                        ? (value) {
-                            if (value != _passwordController.text) {
-                              return 'Passwords do not match!';
-                            }
-                            return null;
-                          }
-                        : null,
-                )
-                : Container(),
+                _authMode == AuthMode.Signup
+                    ? TextFormField(
+                        enabled: _authMode == AuthMode.Signup,
+                        decoration:
+                            InputDecoration(labelText: 'Confirm Password'),
+                        obscureText: true,
+                        validator: _authMode == AuthMode.Signup
+                            ? (value) {
+                                if (value != _passwordController.text) {
+                                  return 'Passwords do not match!';
+                                }
+                                return null;
+                              }
+                            : null,
+                      )
+                    : Container(),
                 SizedBox(
                   height: 20,
                 ),
-                _isLoading ?
-                  CircularProgressIndicator()
-                :
-                  RaisedButton(
-                    child:
-                        Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
-                    onPressed: _submit,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                    color: Theme.of(context).primaryColor,
-                    textColor: Theme.of(context).primaryTextTheme.button.color,
-                  ),
+                _isLoading
+                    ? CircularProgressIndicator()
+                    : RaisedButton(
+                        child: Text(
+                            _authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
+                        onPressed: _submit,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 8.0),
+                        color: Theme.of(context).primaryColor,
+                        textColor:
+                            Theme.of(context).primaryTextTheme.button.color,
+                      ),
                 FlatButton(
                   child: Text(
                       '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
