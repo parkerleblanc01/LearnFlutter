@@ -11,13 +11,16 @@ import '../providers/products.dart';
 
 class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
+  final String authToken;
+
+  Orders(this.authToken, this._orders);
 
   List<OrderItem> get orders {
     return new List<OrderItem>.from(_orders);
   }
 
   Future<void> fetchAndSetOrders() async {
-    final response = await http.get("${Products.baseUrl}/orders.json");
+    final response = await http.get("${Products.baseUrl}/orders.json?auth=$authToken");
     final List<OrderItem> loadedOrders = [];
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
     if (extractedData == null) {
@@ -38,7 +41,7 @@ class Orders with ChangeNotifier {
       products: cartProducts,
     );
     final response = await http.post(
-      "${Products.baseUrl}/orders.json",
+      "${Products.baseUrl}/orders.json?auth=$authToken",
       body: json.encode(newOrder.toMap()),
     );
     _orders.insert(

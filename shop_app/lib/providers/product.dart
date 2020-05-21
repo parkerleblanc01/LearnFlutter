@@ -61,14 +61,14 @@ class Product with ChangeNotifier {
     );
   }
 
-  void toggleFavoriteStatus() async {
+  void toggleFavoriteStatus(String token) async {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
     var hasError = false;
     try {
       final response = await http.patch(
-        "${Products.baseUrl}/products/$id.json",
+        "${Products.baseUrl}/products/$id.json?auth=$token",
         body: json.encode({
           'isFavorite': isFavorite,
         }),

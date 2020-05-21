@@ -47,6 +47,10 @@ class Products with ChangeNotifier {
 //    ),
 //  ];
 
+  final String authToken;
+
+  Products(this.authToken, this._items);
+
   // Make sure users of this class cannot manipulate objects in memory
   List<Product> get items {
     return new List<Product>.from(_items);
@@ -62,7 +66,7 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     try {
-      final response = await http.get("$baseUrl/products.json");
+      final response = await http.get("$baseUrl/products.json?auth=$authToken");
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       List<Product> fetchedProducts = [];
       extractedData.forEach((productId, prodData) {
@@ -82,7 +86,7 @@ class Products with ChangeNotifier {
   Future<void> addProduct(Product product) async {
     try {
       final response = await http.post(
-        "$baseUrl/products.json",
+        "$baseUrl/products.json?auth=$authToken",
         body: json.encode(product.toMap()),
       );
       final newProduct = product.newModifiedProduct(
@@ -100,7 +104,7 @@ class Products with ChangeNotifier {
     final prodIndex = _items.indexWhere((prod) => prod.id == product.id);
     if (prodIndex >= 0) {
       await http.patch(
-        "$baseUrl/products/${product.id}.json",
+        "$baseUrl/products/${product.id}.json?auth=$authToken",
         body: json.encode(product.toMap()),
       );
       _items[prodIndex] = product;
@@ -118,7 +122,7 @@ class Products with ChangeNotifier {
 
     var errorExists = false;
     try {
-      final response = await http.delete("$baseUrl/products/$id.json");
+      final response = await http.delete("$baseUrl/products/$id.json?auth=$authToken");
       if (response.statusCode >= 400) {
         errorExists = true;
       }
