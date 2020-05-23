@@ -48,8 +48,9 @@ class Products with ChangeNotifier {
 //  ];
 
   final String authToken;
+  final String userId;
 
-  Products(this.authToken, this._items);
+  Products(this.authToken, this.userId, this._items);
 
   // Make sure users of this class cannot manipulate objects in memory
   List<Product> get items {
@@ -66,12 +67,26 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     try {
-      final response = await http.get("$baseUrl/products.json?auth=$authToken");
+      // Start both futures before awaiting one of them.
+      final responseFuture = http.get("$baseUrl/products.json?auth=$authToken");
+      final favoriteFuture = http.get("$baseUrl/userFavorites/$userId.json?auth=$authToken");
+
+      final response = await responseFuture;
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+      final favoriteResponse = await favoriteFuture;
+      final favoriteData = json.decode(favoriteResponse.body);
       List<Product> fetchedProducts = [];
       extractedData.forEach((productId, prodData) {
+        var isFavorite = false;
+        if (favoriteData != null) {
+          isFavorite = favoriteData[productId] == null ? false : favoriteData[productId];
+        }
         fetchedProducts.add(Product.fromMap(
           newId: productId,
+          isFavorite: isFavorite,
           map: prodData,
         ));
       });

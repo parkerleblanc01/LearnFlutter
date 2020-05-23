@@ -23,14 +23,14 @@ class Product with ChangeNotifier {
   });
 
   static Product fromMap(
-      {@required String newId, @required Map<String, dynamic> map}) {
+      {@required String newId, bool isFavorite = false, @required Map<String, dynamic> map}) {
     return new Product(
       id: newId,
       title: map['title'],
       description: map['description'],
       price: map['price'],
       imageUrl: map['imageUrl'],
-      isFavorite: map['isFavorite'],
+      isFavorite: isFavorite,
     );
   }
 
@@ -40,7 +40,6 @@ class Product with ChangeNotifier {
       'description': description,
       'imageUrl': imageUrl,
       'price': price,
-      'isFavorite': isFavorite,
     };
   }
 
@@ -61,17 +60,15 @@ class Product with ChangeNotifier {
     );
   }
 
-  void toggleFavoriteStatus(String token) async {
+  void toggleFavoriteStatus(String token, String userId) async {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
     var hasError = false;
     try {
-      final response = await http.patch(
-        "${Products.baseUrl}/products/$id.json?auth=$token",
-        body: json.encode({
-          'isFavorite': isFavorite,
-        }),
+      final response = await http.put(
+        "${Products.baseUrl}/userFavorites/$userId/$id.json?auth=$token",
+        body: json.encode(isFavorite),
       );
       if (response.statusCode >= 400) {
         hasError = true;
