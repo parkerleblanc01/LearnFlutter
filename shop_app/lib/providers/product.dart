@@ -34,12 +34,13 @@ class Product with ChangeNotifier {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap(String userId) {
     return {
       'title': title,
       'description': description,
       'imageUrl': imageUrl,
       'price': price,
+      'creatorId': userId,
     };
   }
 

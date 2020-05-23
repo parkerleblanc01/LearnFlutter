@@ -65,10 +65,11 @@ class Products with ChangeNotifier {
     return _items.firstWhere((product) => product.id == id);
   }
 
-  Future<void> fetchAndSetProducts() async {
+  Future<void> fetchAndSetProducts({bool filterByUser = false}) async {
+    final filterString = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
     try {
       // Start both futures before awaiting one of them.
-      final responseFuture = http.get("$baseUrl/products.json?auth=$authToken");
+      final responseFuture = http.get('$baseUrl/products.json?auth=$authToken&$filterString');
       final favoriteFuture = http.get("$baseUrl/userFavorites/$userId.json?auth=$authToken");
 
       final response = await responseFuture;
@@ -102,7 +103,7 @@ class Products with ChangeNotifier {
     try {
       final response = await http.post(
         "$baseUrl/products.json?auth=$authToken",
-        body: json.encode(product.toMap()),
+        body: json.encode(product.toMap(userId)),
       );
       final newProduct = product.newModifiedProduct(
         id: json.decode(response.body)['name'],
@@ -120,7 +121,7 @@ class Products with ChangeNotifier {
     if (prodIndex >= 0) {
       await http.patch(
         "$baseUrl/products/${product.id}.json?auth=$authToken",
-        body: json.encode(product.toMap()),
+        body: json.encode(product.toMap(userId)),
       );
       _items[prodIndex] = product;
       notifyListeners();
