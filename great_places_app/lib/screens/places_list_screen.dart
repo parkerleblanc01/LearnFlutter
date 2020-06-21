@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 // Screens
 import '../screens/add_place_screen.dart';
+import '../screens/place_detail_screen.dart';
 
 // Providers
 import '../providers/great_places.dart';
@@ -43,7 +44,7 @@ class PlacesListScreen extends StatelessWidget {
                           title: Text(greatPlaces.items[index].title),
                           subtitle: Text(greatPlaces.items[index].location.address),
                           onTap: () {
-                            // Go to detail page
+                            Navigator.of(context).pushNamed(PlaceDetailScreen.routeName, arguments: greatPlaces.items[index].id);
                           },
                         ),
                       ),
