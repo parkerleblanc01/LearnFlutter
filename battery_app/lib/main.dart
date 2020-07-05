@@ -33,6 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
         _batteryLevel = batteryLevel;
       });
     } on PlatformException catch(error) {
+      print(error);
       setState(() {
         _batteryLevel = null;
       });
@@ -41,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    _getBatteryLevel();
     super.initState();
   }
 
