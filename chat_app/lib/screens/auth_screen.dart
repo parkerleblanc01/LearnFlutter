@@ -9,11 +9,23 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  void _submitAuthForm(
+    String email,
+    String password,
+    String username,
+    bool isLogin,
+  ) {
+    print(username);
+    print(email);
+    print(password);
+    // TODO: Send auth request to firebase
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: AuthForm(),
+      body: AuthForm(_submitAuthForm),
     );
   }
 }
