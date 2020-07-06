@@ -28,6 +28,30 @@
       });
     }
   </script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+
+  <script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyC2QQw2ilCVFYuuxXf93pC28rNyG6zsaPI",
+    authDomain: "flutter-chat-ad0bf.firebaseapp.com",
+    databaseURL: "https://flutter-chat-ad0bf.firebaseio.com",
+    projectId: "flutter-chat-ad0bf",
+    storageBucket: "flutter-chat-ad0bf.appspot.com",
+    messagingSenderId: "989565913801",
+    appId: "1:989565913801:web:97ed5feba369b5187a1b18",
+    measurementId: "G-RNFL474BLY"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  </script>
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>
