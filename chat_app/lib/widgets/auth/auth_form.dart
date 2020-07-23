@@ -75,6 +75,8 @@ class _AuthFormState extends State<AuthForm> {
                         ),
                   TextFormField(
                     key: ValueKey('Email'),
+                    autocorrect: false,
+                    textCapitalization: TextCapitalization.none,
                     validator: (value) {
                       final bool emailValid = RegExp(
                               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -95,6 +97,9 @@ class _AuthFormState extends State<AuthForm> {
                   !_isLogin
                       ? TextFormField(
                           key: ValueKey('Username'),
+                          autocorrect: true,
+                          textCapitalization: TextCapitalization.words,
+                          enableSuggestions: false,
                           validator: (value) {
                             if (value.isEmpty || value.length < 4) {
                               return 'Please enter at least 4 characters.';

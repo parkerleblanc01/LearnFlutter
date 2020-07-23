@@ -17,6 +17,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
+
+    super.initState();
     final fbm = FirebaseMessaging();
     fbm.requestNotificationPermissions();
     fbm.configure(onMessage: (msg) {
@@ -30,7 +32,6 @@ class _ChatScreenState extends State<ChatScreen> {
       return;
     });
     fbm.subscribeToTopic('chat');
-    super.initState();
   }
 
   @override
