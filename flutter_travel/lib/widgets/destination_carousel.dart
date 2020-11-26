@@ -53,7 +53,7 @@ class DestinationCarousel extends StatelessWidget {
                   alignment: Alignment.topCenter,
                   children: [
                     Positioned(
-                      bottom: 15.0,
+                      bottom: 5.0,
                       child: Container(
                         height: 120.0,
                         width: 200.0,
